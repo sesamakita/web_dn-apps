@@ -422,3 +422,151 @@
         font-size: var(--text-2xl);
     }
 }
+
+/* ========== MOBILE ENHANCEMENTS ========== */
+
+@media (max-width: 1023px) {
+
+    /* Gradient background for mobile */
+    .auth-page {
+        background: linear-gradient(135deg, var(--primary-50) 0%, var(--bg-primary) 50%, var(--accent-50) 100%);
+        min-height: 100vh;
+    }
+
+    [data-theme="dark"] .auth-page {
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, var(--bg-primary) 50%, rgba(99, 102, 241, 0.1) 100%);
+    }
+
+    /* Mobile Header with Logo */
+    .auth-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .auth-branding {
+        display: block !important;
+        padding: var(--space-8) var(--space-6);
+        background: var(--gradient-dark);
+        text-align: center;
+    }
+
+    .auth-branding-content {
+        max-width: 100%;
+    }
+
+    .auth-branding-content .logo {
+        margin-bottom: var(--space-4);
+    }
+
+    .auth-branding-content .logo-image {
+        height: 48px;
+    }
+
+    .auth-branding-content h1 {
+        font-size: var(--text-xl);
+        margin-bottom: var(--space-2);
+    }
+
+    .auth-branding-content>p {
+        font-size: var(--text-sm);
+        margin-bottom: 0;
+        display: none;
+    }
+
+    /* Hide features on mobile */
+    .auth-features {
+        display: none;
+    }
+
+    /* Enhanced Form Container */
+    .auth-form-container {
+        padding: var(--space-6);
+        flex: 1;
+        align-items: flex-start;
+        padding-top: var(--space-8);
+    }
+
+    .auth-form-wrapper {
+        background: var(--bg-card);
+        padding: var(--space-6);
+        border-radius: var(--radius-xl);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border-color);
+    }
+
+    [data-theme="dark"] .auth-form-wrapper {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .auth-form-header {
+        margin-bottom: var(--space-6);
+    }
+
+    .auth-form-header h2 {
+        font-size: var(--text-xl);
+    }
+
+    .auth-form-header p {
+        font-size: var(--text-sm);
+    }
+
+    /* Compact Social Buttons */
+    .auth-social {
+        flex-direction: row;
+        gap: var(--space-3);
+        margin-bottom: var(--space-4);
+    }
+
+    .btn-social {
+        flex: 1;
+        padding: var(--space-3);
+        font-size: 0;
+        justify-content: center;
+    }
+
+    .btn-social svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    /* Smaller divider */
+    .auth-divider {
+        margin-bottom: var(--space-4);
+    }
+
+    .auth-divider span {
+        font-size: var(--text-xs);
+    }
+
+    /* Form adjustments */
+    .auth-form {
+        gap: var(--space-4);
+    }
+
+    .form-group input {
+        padding: var(--space-3);
+        font-size: var(--text-sm);
+    }
+
+    .form-group label {
+        font-size: var(--text-xs);
+    }
+
+    .forgot-password {
+        font-size: var(--text-xs);
+    }
+
+    .form-group-checkbox label {
+        font-size: var(--text-xs);
+    }
+
+    .btn-block {
+        padding: var(--space-3) var(--space-4);
+        font-size: var(--text-sm);
+    }
+
+    .auth-switch {
+        margin-top: var(--space-4);
+        font-size: var(--text-xs);
+    }
+}

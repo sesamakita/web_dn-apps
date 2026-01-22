@@ -251,7 +251,8 @@
 
 /* Theme Toggle Button */
 .theme-toggle {
-    display: flex;
+    display: none;
+    /* Hidden on mobile by default */
     align-items: center;
     justify-content: center;
     width: 40px;
@@ -263,6 +264,13 @@
     transition: all var(--transition-fast);
 }
 
+/* Show theme toggle on desktop */
+@media (min-width: 1024px) {
+    .theme-toggle {
+        display: flex;
+    }
+}
+
 .theme-toggle:hover {
     background: var(--bg-tertiary);
     border-color: var(--border-color-strong);
@@ -272,6 +280,23 @@
     width: 20px;
     height: 20px;
     color: var(--text-secondary);
+}
+
+/* Theme Toggle in Mobile Menu */
+.nav-mobile-theme {
+    position: absolute;
+    top: var(--space-6);
+    right: var(--space-6);
+}
+
+.nav-mobile-theme .theme-toggle {
+    display: flex;
+}
+
+@media (min-width: 1024px) {
+    .nav-mobile-theme {
+        display: none;
+    }
 }
 
 .theme-toggle .icon-moon {

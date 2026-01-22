@@ -4,7 +4,7 @@
  */
 
 export function initTheme() {
-    const themeToggle = document.querySelector('.theme-toggle');
+    const themeToggles = document.querySelectorAll('.theme-toggle');
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
     // Get stored theme or system preference
@@ -21,22 +21,24 @@ export function initTheme() {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
 
-        // Update toggle button icon
-        updateToggleIcon(theme);
+        // Update toggle button icons for all toggles
+        updateToggleIcons(theme);
     }
 
-    // Update toggle button icon
-    function updateToggleIcon(theme) {
-        const moonIcon = themeToggle?.querySelector('.icon-moon');
-        const sunIcon = themeToggle?.querySelector('.icon-sun');
+    // Update toggle button icons for all theme toggles
+    function updateToggleIcons(theme) {
+        themeToggles.forEach(toggle => {
+            const moonIcon = toggle.querySelector('.icon-moon');
+            const sunIcon = toggle.querySelector('.icon-sun');
 
-        if (theme === 'dark') {
-            moonIcon?.style.setProperty('display', 'none');
-            sunIcon?.style.setProperty('display', 'block');
-        } else {
-            moonIcon?.style.setProperty('display', 'block');
-            sunIcon?.style.setProperty('display', 'none');
-        }
+            if (theme === 'dark') {
+                moonIcon?.style.setProperty('display', 'none');
+                sunIcon?.style.setProperty('display', 'block');
+            } else {
+                moonIcon?.style.setProperty('display', 'block');
+                sunIcon?.style.setProperty('display', 'none');
+            }
+        });
     }
 
     // Toggle theme
@@ -54,8 +56,10 @@ export function initTheme() {
         }
     }
 
-    // Event listeners
-    themeToggle?.addEventListener('click', toggleTheme);
+    // Event listeners for all theme toggles
+    themeToggles.forEach(toggle => {
+        toggle.addEventListener('click', toggleTheme);
+    });
     prefersDarkScheme.addEventListener('change', handleSystemThemeChange);
 
     // Initialize theme
