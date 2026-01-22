@@ -96,4 +96,4 @@ web_dn-apps/
 
 ## 📄 License
 
-© 2026 DN Apps. All rights reserved.
+© 2020 DN Apps. All rights reserved.
