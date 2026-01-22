@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Layanan IT profesional dari DN Apps - Web Development, Mobile App, UI/UX Design, dan Cloud Services.">
+    <title>Services - DN Apps</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo/favicon.svg">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <img src="assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+            </a>
+            <nav class="nav-desktop">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+                    <li class="nav-item"><a href="services.html" class="nav-link active">Services</a></li>
+                    <li class="nav-item"><a href="portfolio.html" class="nav-link">Portfolio</a></li>
+                    <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+                    <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle dark mode">
+                    <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        style="display:none">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <a href="login.html" class="btn btn-ghost nav-login">Login</a>
+                <a href="signup.html" class="btn btn-primary nav-cta">Daftar</a>
+                <button class="mobile-toggle" aria-label="Toggle menu">
+                    <div class="hamburger"><span></span><span></span><span></span></div>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-overlay"></div>
+    <nav class="nav-mobile">
+        <ul class="nav-mobile-list">
+            <li class="nav-mobile-item"><a href="index.html" class="nav-mobile-link">Home</a></li>
+            <li class="nav-mobile-item"><a href="about.html" class="nav-mobile-link">About</a></li>
+            <li class="nav-mobile-item"><a href="services.html" class="nav-mobile-link">Services</a></li>
+            <li class="nav-mobile-item"><a href="portfolio.html" class="nav-mobile-link">Portfolio</a></li>
+            <li class="nav-mobile-item"><a href="blog.html" class="nav-mobile-link">Blog</a></li>
+            <li class="nav-mobile-item"><a href="contact.html" class="nav-mobile-link">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Page Header -->
+        <section class="page-header">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <span class="breadcrumb-separator">/</span>
+                    <span>Services</span>
+                </div>
+                <h1 class="reveal">Layanan Kami</h1>
+                <p class="lead reveal delay-100">Solusi digital komprehensif untuk kebutuhan bisnis Anda</p>
+            </div>
+        </section>
+
+        <!-- Service Tabs -->
+        <section class="section">
+            <div class="container">
+                <div class="services-tabs reveal">
+                    <a href="#web" class="services-tab active" data-target="web">Web Development</a>
+                    <a href="#mobile" class="services-tab" data-target="mobile">Mobile App</a>
+                    <a href="#uiux" class="services-tab" data-target="uiux">UI/UX Design</a>
+                    <a href="#cloud" class="services-tab" data-target="cloud">Cloud Services</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Web Development -->
+        <section class="service-detail" id="web">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <div class="service-detail-content reveal">
+                        <span class="caption">01</span>
+                        <h3>Web Development</h3>
+                        <p>Kami membangun website dan aplikasi web modern yang responsif, cepat, dan SEO-friendly. Dari
+                            landing page hingga aplikasi enterprise kompleks.</p>
+                        <ul class="service-features">
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Website Company Profile</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> E-Commerce Platform</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Custom Web Applications</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Progressive Web Apps (PWA)</li>
+                        </ul>
+                        <div class="service-tech">
+                            <span class="service-tech-label">Tech Stack:</span>
+                            <div class="service-tech-icons">
+                                <img src="https://via.placeholder.com/80x32?text=React" alt="React">
+                                <img src="https://via.placeholder.com/80x32?text=Next.js" alt="Next.js">
+                                <img src="https://via.placeholder.com/80x32?text=Vue" alt="Vue">
+                                <img src="https://via.placeholder.com/80x32?text=Node.js" alt="Node.js">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="contact.html" class="btn btn-primary">Konsultasi Gratis</a>
+                        </div>
+                    </div>
+                    <div class="service-detail-visual reveal delay-100">
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=600&h=400&fit=crop"
+                            alt="Web Development">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mobile App -->
+        <section class="service-detail" id="mobile">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <div class="service-detail-content reveal">
+                        <span class="caption">02</span>
+                        <h3>Mobile App Development</h3>
+                        <p>Aplikasi mobile native dan cross-platform untuk iOS dan Android. Performa tinggi dengan user
+                            experience yang optimal.</p>
+                        <ul class="service-features">
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> iOS Native (Swift)</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Android Native (Kotlin)</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Cross-Platform (Flutter/React Native)</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> App Store Optimization</li>
+                        </ul>
+                        <div class="service-tech">
+                            <span class="service-tech-label">Tech Stack:</span>
+                            <div class="service-tech-icons">
+                                <img src="https://via.placeholder.com/80x32?text=Flutter" alt="Flutter">
+                                <img src="https://via.placeholder.com/80x32?text=Swift" alt="Swift">
+                                <img src="https://via.placeholder.com/80x32?text=Kotlin" alt="Kotlin">
+                                <img src="https://via.placeholder.com/80x32?text=Firebase" alt="Firebase">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="contact.html" class="btn btn-primary">Konsultasi Gratis</a>
+                        </div>
+                    </div>
+                    <div class="service-detail-visual reveal delay-100">
+                        <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop"
+                            alt="Mobile App">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- UI/UX Design -->
+        <section class="service-detail" id="uiux">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <div class="service-detail-content reveal">
+                        <span class="caption">03</span>
+                        <h3>UI/UX Design</h3>
+                        <p>Desain yang tidak hanya indah, tetapi juga fungsional. Kami fokus pada pengalaman pengguna
+                            yang optimal untuk meningkatkan konversi.</p>
+                        <ul class="service-features">
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> User Research & Analysis</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Wireframing & Prototyping</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Visual Design & Branding</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Design System</li>
+                        </ul>
+                        <div class="service-tech">
+                            <span class="service-tech-label">Tools:</span>
+                            <div class="service-tech-icons">
+                                <img src="https://via.placeholder.com/80x32?text=Figma" alt="Figma">
+                                <img src="https://via.placeholder.com/80x32?text=Adobe+XD" alt="Adobe XD">
+                                <img src="https://via.placeholder.com/80x32?text=Sketch" alt="Sketch">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="contact.html" class="btn btn-primary">Konsultasi Gratis</a>
+                        </div>
+                    </div>
+                    <div class="service-detail-visual reveal delay-100">
+                        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&h=400&fit=crop"
+                            alt="UI/UX Design">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cloud Services -->
+        <section class="service-detail" id="cloud">
+            <div class="container">
+                <div class="service-detail-grid">
+                    <div class="service-detail-content reveal">
+                        <span class="caption">04</span>
+                        <h3>Cloud Services</h3>
+                        <p>Infrastruktur cloud yang scalable, aman, dan andal. Dari deployment hingga maintenance, kami
+                            handle semuanya.</p>
+                        <ul class="service-features">
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Cloud Architecture Design</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> DevOps & CI/CD</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Server Management</li>
+                            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg> Security & Monitoring</li>
+                        </ul>
+                        <div class="service-tech">
+                            <span class="service-tech-label">Platforms:</span>
+                            <div class="service-tech-icons">
+                                <img src="https://via.placeholder.com/80x32?text=AWS" alt="AWS">
+                                <img src="https://via.placeholder.com/80x32?text=GCP" alt="GCP">
+                                <img src="https://via.placeholder.com/80x32?text=Docker" alt="Docker">
+                                <img src="https://via.placeholder.com/80x32?text=K8s" alt="Kubernetes">
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="contact.html" class="btn btn-primary">Konsultasi Gratis</a>
+                        </div>
+                    </div>
+                    <div class="service-detail-visual reveal delay-100">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&h=400&fit=crop"
+                            alt="Cloud Services">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Development Process -->
+        <section class="services-process">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="caption">Our Process</span>
+                    <h2>Proses Pengembangan</h2>
+                    <p>Metodologi Agile untuk hasil yang optimal</p>
+                </div>
+
+                <div class="process-timeline">
+                    <div class="process-step reveal">
+                        <div class="process-step-icon">🎯</div>
+                        <h4>Discovery</h4>
+                        <p>Memahami kebutuhan dan tujuan proyek</p>
+                    </div>
+                    <div class="process-step reveal delay-100">
+                        <div class="process-step-icon">🎨</div>
+                        <h4>Design</h4>
+                        <p>Merancang UI/UX dan arsitektur</p>
+                    </div>
+                    <div class="process-step reveal delay-200">
+                        <div class="process-step-icon">💻</div>
+                        <h4>Develop</h4>
+                        <p>Membangun dengan teknologi terkini</p>
+                    </div>
+                    <div class="process-step reveal delay-300">
+                        <div class="process-step-icon">🚀</div>
+                        <h4>Deploy</h4>
+                        <p>Launch dan dukungan berkelanjutan</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="reveal">Siap Memulai Proyek Anda?</h2>
+                <p class="reveal delay-100">Konsultasikan kebutuhan Anda dengan tim kami secara gratis.</p>
+                <a href="contact.html" class="btn btn-lg reveal delay-200"
+                    style="background:white;color:var(--primary-600)">Hubungi Kami Sekarang</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-main">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <img src="assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+                    </a>
+                    <p>Transforming ideas into digital reality.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="about.html#team">Our Team</a></li>
+                        <li><a href="about.html#careers">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="services.html#web">Web Development</a></li>
+                        <li><a href="services.html#mobile">Mobile App</a></li>
+                        <li><a href="services.html#uiux">UI/UX Design</a></li>
+                        <li><a href="services.html#cloud">Cloud Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-copyright">© 2020 DN Apps. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,351 @@
+/* ============================================
+   Button Components
+   Primary, Secondary, Ghost, Icon variants
+   ============================================ */
+
+/* ========== BASE BUTTON ========== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    line-height: 1;
+    text-decoration: none;
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-xs);
+    border-radius: var(--radius-md);
+}
+
+.btn-lg {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--text-base);
+    border-radius: var(--radius-xl);
+}
+
+.btn-xl {
+    padding: var(--space-5) var(--space-10);
+    font-size: var(--text-lg);
+    border-radius: var(--radius-xl);
+}
+
+/* ========== PRIMARY BUTTON ========== */
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(37, 99, 235, 0.6), 0 0 60px rgba(37, 99, 235, 0.3);
+    color: white;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Primary Accent (Cyan) */
+.btn-primary-accent {
+    background: var(--gradient-accent);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba(6, 182, 212, 0.3);
+}
+
+.btn-primary-accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px 0 rgba(6, 182, 212, 0.4);
+}
+
+/* ========== SECONDARY BUTTON ========== */
+
+.btn-secondary {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-color-strong);
+    color: var(--text-primary);
+}
+
+/* ========== OUTLINE BUTTON ========== */
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-500);
+    border-color: var(--primary-500);
+}
+
+.btn-outline:hover {
+    background: var(--primary-500);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(37, 99, 235, 0.5);
+}
+
+.btn-outline-white {
+    background: transparent;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-white:hover {
+    background: white;
+    color: var(--primary-600);
+    border-color: white;
+}
+
+/* ========== GHOST BUTTON ========== */
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-secondary);
+    padding: var(--space-2) var(--space-3);
+}
+
+.btn-ghost:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* ========== LINK BUTTON ========== */
+
+.btn-link {
+    background: transparent;
+    color: var(--primary-500);
+    padding: 0;
+    border: none;
+}
+
+.btn-link:hover {
+    color: var(--primary-600);
+    text-decoration: underline;
+}
+
+/* ========== ICON BUTTON ========== */
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: var(--radius-lg);
+}
+
+.btn-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-icon-sm {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-icon-sm svg {
+    width: 16px;
+    height: 16px;
+}
+
+.btn-icon-lg {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-icon-lg svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* ========== BUTTON WITH ICON ========== */
+
+.btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.btn-lg svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Icon animation on hover */
+.btn-arrow-right svg {
+    transition: transform var(--transition-fast);
+}
+
+.btn-arrow-right:hover svg {
+    transform: translateX(4px);
+}
+
+/* ========== LOADING STATE ========== */
+
+.btn-loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spinner 0.6s linear infinite;
+}
+
+.btn-primary.btn-loading::after {
+    border-color: white;
+    border-right-color: transparent;
+}
+
+@keyframes btn-spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== BUTTON GROUP ========== */
+
+.btn-group {
+    display: inline-flex;
+}
+
+.btn-group .btn {
+    border-radius: 0;
+}
+
+.btn-group .btn:first-child {
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
+
+.btn-group .btn:last-child {
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+.btn-group .btn:not(:last-child) {
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* ========== SPECIAL EFFECTS ========== */
+
+/* Glow effect button */
+.btn-glow {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-glow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-glow:hover::before {
+    left: 100%;
+}
+
+/* Ripple effect */
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-ripple::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.3) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 1s;
+}
+
+.btn-ripple:active::after {
+    transform: scale(0, 0);
+    opacity: 0.3;
+    transition: 0s;
+}
+
+/* ========== FLOATING ACTION BUTTON ========== */
+
+.fab {
+    position: fixed;
+    bottom: var(--space-8);
+    right: var(--space-8);
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-accent);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-xl), var(--shadow-glow-accent);
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    z-index: var(--z-fixed);
+}
+
+.fab:hover {
+    transform: scale(1.1);
+    box-shadow: var(--shadow-2xl), 0 0 40px rgba(6, 182, 212, 0.5);
+}
+
+.fab svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* WhatsApp FAB */
+.fab-whatsapp {
+    background: #25D366;
+    box-shadow: var(--shadow-xl), 0 0 20px rgba(37, 211, 102, 0.3);
+}
+
+.fab-whatsapp:hover {
+    box-shadow: var(--shadow-2xl), 0 0 40px rgba(37, 211, 102, 0.5);
+}
