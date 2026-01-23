@@ -110,7 +110,7 @@
                         <h3>Kirim Pesan</h3>
                         <p>Isi form di bawah ini dan kami akan menghubungi Anda dalam 24 jam.</p>
 
-                        <form data-validate>
+                        <form id="contactForm" data-validate>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label class="form-label required">Nama Lengkap</label>
@@ -332,7 +332,49 @@
         </div>
     </footer>
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+
     <script type="module" src="js/main.js"></script>
+
+    <!-- Contact Form Handler -->
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalHTML = submitBtn.innerHTML;
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Mengirim...';
+
+            // Get form data
+            const formData = new FormData(this);
+            const contactData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone') || null,
+                subject: formData.get('service') || 'General Inquiry',
+                message: formData.get('message'),
+                budget: formData.get('budget') || null
+            };
+
+            const result = await submitContact(contactData);
+
+            if (result.success) {
+                alert('Pesan Anda berhasil dikirim! Kami akan menghubungi Anda segera.');
+                this.reset();
+            } else {
+                alert('Gagal mengirim pesan: ' + result.error);
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalHTML;
+        });
+    </script>
 </body>
 
 </html>

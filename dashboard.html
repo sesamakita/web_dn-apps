@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard DN Apps - Kelola proyek Anda">
+    <title>Dashboard - DN Apps</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/logo/favicon.svg">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/pages/auth.css">
+    <style>
+        /* Dashboard Specific Styles */
+        .dashboard-container {
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .dashboard-header {
+            background: var(--gradient-dark);
+            padding: var(--space-6) var(--space-8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-header .logo-image {
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+
+        .dashboard-header-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            color: white;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: var(--font-bold);
+            color: white;
+        }
+
+        .user-name {
+            font-weight: var(--font-medium);
+        }
+
+        .btn-logout {
+            padding: var(--space-2) var(--space-4);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-lg);
+            color: white;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .dashboard-content {
+            padding: var(--space-8);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .welcome-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: var(--space-8);
+            margin-bottom: var(--space-8);
+        }
+
+        .welcome-card h1 {
+            font-size: var(--text-3xl);
+            margin-bottom: var(--space-2);
+            color: var(--text-primary);
+        }
+
+        .welcome-card p {
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-4);
+        }
+
+        .stat-value {
+            font-size: var(--text-3xl);
+            font-weight: var(--font-bold);
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: var(--text-sm);
+        }
+
+        .quick-actions {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+        }
+
+        .quick-actions h2 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-4);
+            color: var(--text-primary);
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-3);
+        }
+
+        .action-buttons .btn {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                gap: var(--space-4);
+            }
+
+            .dashboard-content {
+                padding: var(--space-4);
+            }
+
+            .welcome-card {
+                padding: var(--space-6);
+            }
+
+            .welcome-card h1 {
+                font-size: var(--text-2xl);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <header class="dashboard-header">
+            <a href="index.html">
+                <img src="assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+            </a>
+            <div class="dashboard-header-actions">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span class="user-name" id="userName">Loading...</span>
+                </div>
+                <button class="btn-logout" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="dashboard-content">
+            <!-- Welcome Card -->
+            <div class="welcome-card">
+                <h1>Selamat Datang, <span id="welcomeName">User</span>! 👋</h1>
+                <p>Kelola proyek dan pantau progress Anda di sini.</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Proyek Aktif</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Proyek Selesai</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💬</div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Pesan Baru</div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2>Aksi Cepat</h2>
+                <div class="action-buttons">
+                    <a href="contact.html" class="btn btn-primary">Mulai Proyek Baru</a>
+                    <a href="services.html" class="btn btn-outline">Lihat Layanan</a>
+                    <a href="portfolio.html" class="btn btn-outline">Portfolio</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+
+    <!-- JavaScript -->
+    <script>
+        // Require authentication
+        (async () => {
+            const user = await getUser();
+
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Get user profile
+            const profile = await getUserProfile();
+
+            // Update UI with user data
+            const firstName = profile?.first_name || user.user_metadata?.first_name || '';
+            const lastName = profile?.last_name || user.user_metadata?.last_name || '';
+            const fullName = `${firstName} ${lastName}`.trim() || user.email.split('@')[0];
+            const initial = fullName.charAt(0).toUpperCase();
+
+            document.getElementById('userAvatar').textContent = initial;
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('welcomeName').textContent = firstName || fullName;
+        })();
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            const result = await signOut();
+            if (result.success) {
+                window.location.href = 'login.html';
+            } else {
+                alert('Logout gagal: ' + result.error);
+            }
+        });
+    </script>
+</body>
+
+</html>

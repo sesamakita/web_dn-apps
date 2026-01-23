@@ -177,8 +177,16 @@
         </div>
     </div>
 
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+
     <!-- JavaScript -->
     <script>
+        // Redirect if already logged in
+        redirectIfAuthenticated('dashboard.html');
+
         // Toggle password visibility
         document.querySelectorAll('.toggle-password').forEach(btn => {
             btn.addEventListener('click', function () {
@@ -224,8 +232,8 @@
             }
         });
 
-        // Form submission (demo)
-        document.getElementById('signupForm').addEventListener('submit', function (e) {
+        // Signup Form submission
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const password = document.getElementById('password').value;
@@ -236,7 +244,32 @@
                 return;
             }
 
-            alert('Pendaftaran berhasil! (Demo)');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Memproses...';
+
+            const email = document.getElementById('email').value;
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const phone = document.getElementById('phone').value;
+
+            const result = await signUp(email, password, {
+                first_name: firstName,
+                last_name: lastName,
+                phone: phone
+            });
+
+            if (result.success) {
+                alert('Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi.');
+                window.location.href = 'login.html';
+            } else {
+                alert('Pendaftaran gagal: ' + result.error);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
         });
     </script>
 </body>
