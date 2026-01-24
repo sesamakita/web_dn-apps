@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initTheme();
   initAnimations();
-  initAnimations();
   window.initializeAnimations = initAnimations;
 
   console.log('🚀 Website initialized successfully!');

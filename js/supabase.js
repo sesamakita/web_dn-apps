@@ -11,3 +11,29 @@ const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Export for use in other files
 window.supabaseClient = supabaseClient;
+
+/**
+ * Recovery/Invite Link Redirector
+ * If user lands on a page with #access_token=...&type=recovery, move them to reset-password.html
+ * This handles cases where Supabase redirects to the Site URL (homepage) instead of the specific redirectTo URL
+ */
+(function () {
+    const hash = window.location.hash;
+    const search = window.location.search;
+    const path = window.location.pathname;
+
+    // Detect recovery/invite in hash OR search
+    const isAuthRequest = (hash + search).includes('type=recovery') ||
+        (hash + search).includes('type=invite') ||
+        (hash + search).includes('access_token=') ||
+        (hash + search).includes('error_description=');
+
+    if (isAuthRequest) {
+        // Only redirect if NOT already on the reset-password page
+        if (!path.includes('reset-password')) {
+            console.log('Auth action detected, redirecting to reset-password.html...');
+            const target = 'reset-password.html' + hash + search;
+            window.location.href = target;
+        }
+    }
+})();
