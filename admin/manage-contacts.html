@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pesan - Admin DN Apps</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/favicon.svg">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/auth.css">
+    <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout" id="adminContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html">
+                    <img src="../assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="manage-services.html" class="nav-item">
+                    <span>🛠️</span> Services
+                </a>
+                <a href="manage-portfolio.html" class="nav-item">
+                    <span>📁</span> Portfolio
+                </a>
+                <a href="manage-blog.html" class="nav-item">
+                    <span>📝</span> Blog
+                </a>
+                <a href="manage-contacts.html" class="nav-item active">
+                    <span>📧</span> Contacts
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-ghost btn-block" id="logoutBtn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-title">
+                    <h1>Kelola Pesan</h1>
+                    <p>Inquiry dan pesan dari pengunjung website.</p>
+                </div>
+            </header>
+
+            <div class="content-card p-0 mt-8">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Nama</th>
+                            <th>Subjek</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactsList">
+                        <tr>
+                            <td colspan="4" style="text-align:center">Loading messages...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal View -->
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-card modal-card-lg">
+            <h2 style="margin-bottom: var(--space-8); font-weight: 800; font-size: var(--text-2xl);">Detail Pesan</h2>
+            <div id="contactDetail" style="line-height: 1.6;">
+                <!-- Content injected here -->
+            </div>
+            <div
+                style="display:flex; justify-content: flex-end; margin-top: var(--space-10); border-top: 1px solid var(--border-color); padding-top: 24px;">
+                <button type="button" class="btn btn-primary" onclick="closeModal()"
+                    style="padding: 12px 32px;">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+        let contacts = [];
+
+        // Auth Guard
+        (async () => {
+            const user = await getUser();
+            if (!user) { window.location.href = '../login.html'; return; }
+            const { data: profile } = await supabaseClient.from('profiles').select('role').eq('id', user.id).single();
+            if (profile?.role !== 'admin') {
+                alert('Akses Ditolak.');
+                window.location.href = '../dashboard.html';
+                return;
+            }
+            document.getElementById('adminContainer').style.display = 'flex';
+            loadContacts();
+        })();
+
+        // Logout
+        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+            await signOut();
+            window.location.href = '../login.html';
+        });
+
+        async function loadContacts() {
+            const { data, error } = await supabaseClient.from('contacts').select('*').order('created_at', { ascending: false });
+            if (error) return console.error(error);
+            contacts = data;
+            renderContacts();
+        }
+
+        function renderContacts() {
+            const html = contacts.map(c => `
+                <tr class="${c.is_read ? '' : 'unread'}">
+                    <td>${new Date(c.created_at).toLocaleDateString('id-ID')}</td>
+                    <td><strong>${c.name}</strong></td>
+                    <td style="color: var(--text-secondary)">${c.subject || '-'}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-outline" onclick="viewContact('${c.id}')">Buka</button>
+                            <button class="btn btn-sm btn-ghost" style="color:red" onclick="deleteContact('${c.id}')">Hapus</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('contactsList').innerHTML = html || '<tr><td colspan="4" style="text-align:center">Tidak ada pesan.</td></tr>';
+        }
+
+        async function viewContact(id) {
+            const c = contacts.find(x => x.id === id);
+            const html = `
+                <div class="form-section">
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Pengirim</label>
+                            <p style="font-weight: 500">${c.name}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <p>${c.email}</p>
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label>Telepon</label>
+                            <p>${c.phone || '-'}</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Budget Estimate</label>
+                            <p><span class="badge badge-info">${c.budget || '-'}</span></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Subjek</label>
+                        <p style="font-weight: 600; font-size: var(--text-lg)">${c.subject}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Pesan</label>
+                        <div style="background: var(--bg-secondary); padding: var(--space-6); border-radius: var(--radius-xl); border: 1px solid var(--border-color); white-space: pre-wrap;">${c.message}</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('contactDetail').innerHTML = html;
+            document.getElementById('contactModal').style.display = 'flex';
+
+            if (!c.is_read) {
+                console.log('Marking message as read:', id);
+                const { error } = await supabaseClient.from('contacts').update({ is_read: true }).eq('id', id);
+                if (error) console.error('Error marking as read:', error);
+                else {
+                    console.log('Successfully marked as read in database.');
+                    loadContacts();
+                }
+            }
+        }
+
+        function closeModal() { document.getElementById('contactModal').style.display = 'none'; }
+
+        async function deleteContact(id) {
+            if (!confirm('Hapus pesan ini?')) return;
+            const { error } = await supabaseClient.from('contacts').delete().eq('id', id);
+            if (error) alert(error.message);
+            else loadContacts();
+        }
+    </script>
+</body>
+
+</html>

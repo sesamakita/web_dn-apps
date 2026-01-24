@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - DN Apps</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/favicon.svg">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/auth.css">
+    <style>
+        :root {
+            --sidebar-width: 260px;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: var(--space-6);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sidebar-header .logo-image {
+            height: 32px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-2);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-3);
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--primary-50);
+            color: var(--primary-600);
+        }
+
+        .nav-item.active {
+            font-weight: var(--font-bold);
+        }
+
+        .sidebar-footer {
+            padding: var(--space-4);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Main Content */
+        .admin-main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: var(--space-8);
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-8);
+        }
+
+        .admin-title h1 {
+            font-size: var(--text-2xl);
+            margin-bottom: var(--space-1);
+        }
+
+        .admin-title p {
+            color: var(--text-secondary);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-6);
+            margin-bottom: var(--space-8);
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: var(--text-sm);
+            margin-bottom: var(--space-2);
+        }
+
+        .stat-value {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            color: var(--text-primary);
+        }
+
+        /* Quick Access Cards */
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-6);
+        }
+
+        .quick-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: var(--space-6);
+            transition: transform var(--transition-normal);
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .quick-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-300);
+        }
+
+        .quick-card-icon {
+            font-size: 32px;
+            margin-bottom: var(--space-4);
+        }
+
+        .quick-card h3 {
+            margin-bottom: var(--space-2);
+        }
+
+        .quick-card p {
+            font-size: var(--text-sm);
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 0;
+                overflow: hidden;
+            }
+
+            .admin-main {
+                margin-left: 0;
+                padding: var(--space-4);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-layout" id="adminContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html">
+                    <img src="../assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="manage-services.html" class="nav-item">
+                    <span>🛠️</span> Services
+                </a>
+                <a href="manage-portfolio.html" class="nav-item">
+                    <span>📁</span> Portfolio
+                </a>
+                <a href="manage-blog.html" class="nav-item">
+                    <span>📝</span> Blog
+                </a>
+                <a href="manage-contacts.html" class="nav-item">
+                    <span>📧</span> Contacts
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-ghost btn-block" id="logoutBtn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-title">
+                    <h1>Admin Dashboard</h1>
+                    <p>Selamat datang kembali, Administrator.</p>
+                </div>
+                <div class="admin-actions">
+                    <a href="../index.html" class="btn btn-outline" target="_blank">Lihat Website</a>
+                </div>
+            </header>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Services</div>
+                    <div class="stat-value" id="countServices">...</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Portfolio</div>
+                    <div class="stat-value" id="countPortfolio">...</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Blog Posts</div>
+                    <div class="stat-value" id="countBlogs">...</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Unread Messages</div>
+                    <div class="stat-value" id="countMessages">...</div>
+                </div>
+            </div>
+
+            <!-- Management Shortcuts -->
+            <div class="quick-grid">
+                <a href="manage-services.html" class="quick-card">
+                    <div class="quick-card-icon">🛠️</div>
+                    <h3>Kelola Layanan</h3>
+                    <p>Tambah atau edit layanan yang ditawarkan di website.</p>
+                </a>
+                <a href="manage-portfolio.html" class="quick-card">
+                    <div class="quick-card-icon">📁</div>
+                    <h3>Kelola Portfolio</h3>
+                    <p>Update hasil karya dan proyek yang telah selesai.</p>
+                </a>
+                <a href="manage-blog.html" class="quick-card">
+                    <div class="quick-card-icon">📝</div>
+                    <h3>Kelola Blog</h3>
+                    <p>Tulis artikel dan tips teknologi terbaru.</p>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+
+    <script>
+        // Use standard Auth Guard
+        (async () => {
+            const user = await getUser();
+            if (!user) {
+                window.location.href = '../login.html';
+                return;
+            }
+
+            // Check if Admin Role
+            const { data: profile, error } = await supabaseClient
+                .from('profiles')
+                .select('role')
+                .eq('id', user.id)
+                .single();
+
+            if (error || profile?.role !== 'admin') {
+                alert('Akses Ditolak: Halaman ini hanya untuk Administrator.');
+                window.location.href = '../dashboard.html';
+                return;
+            }
+
+            // Show container if authorized
+            document.getElementById('adminContainer').style.display = 'flex';
+
+            // Initial load
+            loadStats();
+
+            // Realtime sync for contacts
+            console.log('Initializing Realtime Sync...');
+            const contactsChannel = supabaseClient
+                .channel('admin-dashboard-sync')
+                .on(
+                    'postgres_changes',
+                    { event: '*', schema: 'public', table: 'contacts' },
+                    (payload) => {
+                        console.log('Realtime change detected:', payload);
+                        loadStats();
+                    }
+                );
+
+            contactsChannel.subscribe((status) => {
+                console.log('Realtime subscription status:', status);
+                if (status === 'SUBSCRIBED') {
+                    console.log('Successfully listening for contact changes.');
+                }
+            });
+        })();
+
+        async function loadStats() {
+            try {
+                // Fetch counts
+                const [servicesRes, portfolioRes, blogRes, contactsRes] = await Promise.all([
+                    supabaseClient.from('services').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('portfolio').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('blogs').select('*', { count: 'exact', head: true }),
+                    supabaseClient.from('contacts').select('*', { count: 'exact', head: true }).eq('is_read', false)
+                ]);
+
+                document.getElementById('countServices').textContent = servicesRes.count || 0;
+                document.getElementById('countPortfolio').textContent = portfolioRes.count || 0;
+                document.getElementById('countBlogs').textContent = blogRes.count || 0;
+                document.getElementById('countMessages').textContent = contactsRes.count || 0;
+            } catch (err) {
+                console.error('Error loading stats:', err);
+            }
+        }
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await signOut();
+            window.location.href = '../login.html';
+        });
+    </script>
+</body>
+
+</html>

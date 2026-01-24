@@ -14,7 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initTheme();
   initAnimations();
-  initForms();
-  
+  initAnimations();
+  window.initializeAnimations = initAnimations;
+
   console.log('🚀 Website initialized successfully!');
 });

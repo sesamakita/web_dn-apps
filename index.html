@@ -331,61 +331,10 @@
           <p>Kami menyediakan layanan IT komprehensif untuk membantu bisnis Anda tumbuh di era digital.</p>
         </div>
 
-        <div class="home-services-grid">
-          <!-- Service Card 1 -->
-          <div class="service-card reveal delay-100">
-            <div class="service-card-icon">🌐</div>
-            <h3>Web Development</h3>
-            <p>Website modern dan responsif yang meningkatkan presence online bisnis Anda.</p>
-            <a href="services.html#web" class="service-card-link">
-              Pelajari Lebih
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-
-          <!-- Service Card 2 -->
-          <div class="service-card reveal delay-200">
-            <div class="service-card-icon">📱</div>
-            <h3>Mobile App</h3>
-            <p>Aplikasi iOS & Android yang powerful untuk menjangkau pengguna mobile.</p>
-            <a href="services.html#mobile" class="service-card-link">
-              Pelajari Lebih
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-
-          <!-- Service Card 3 -->
-          <div class="service-card reveal delay-300">
-            <div class="service-card-icon">🎨</div>
-            <h3>UI/UX Design</h3>
-            <p>Desain yang indah dan user-friendly untuk pengalaman pengguna optimal.</p>
-            <a href="services.html#uiux" class="service-card-link">
-              Pelajari Lebih
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
-
-          <!-- Service Card 4 -->
-          <div class="service-card reveal delay-400">
-            <div class="service-card-icon">☁️</div>
-            <h3>Cloud Services</h3>
-            <p>Infrastruktur cloud yang scalable dan aman untuk bisnis Anda.</p>
-            <a href="services.html#cloud" class="service-card-link">
-              Pelajari Lebih
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
+        <div class="home-services-grid" id="homeServicesList">
+          <div class="container py-20 text-center col-span-full">
+            <div class="animate-spin mb-4" style="font-size: 2rem;">⏳</div>
+            <p>Memuat layanan...</p>
           </div>
         </div>
       </div>
@@ -481,61 +430,10 @@
           </a>
         </div>
 
-        <div class="home-portfolio-grid">
-          <!-- Portfolio Card 1 -->
-          <div class="portfolio-card reveal delay-100">
-            <div class="portfolio-card-image">
-              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop"
-                alt="E-Commerce Platform">
-            </div>
-            <div class="portfolio-card-overlay">
-              <div class="portfolio-card-content">
-                <span class="portfolio-card-category">E-Commerce</span>
-                <h3>Modern E-Commerce Platform</h3>
-                <div class="portfolio-card-tech">
-                  <span>React</span>
-                  <span>Node.js</span>
-                  <span>MongoDB</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Portfolio Card 2 -->
-          <div class="portfolio-card reveal delay-200">
-            <div class="portfolio-card-image">
-              <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&h=400&fit=crop"
-                alt="Healthcare App">
-            </div>
-            <div class="portfolio-card-overlay">
-              <div class="portfolio-card-content">
-                <span class="portfolio-card-category">Healthcare</span>
-                <h3>Healthcare Mobile App</h3>
-                <div class="portfolio-card-tech">
-                  <span>Flutter</span>
-                  <span>Firebase</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Portfolio Card 3 -->
-          <div class="portfolio-card reveal delay-300">
-            <div class="portfolio-card-image">
-              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop"
-                alt="Analytics Dashboard">
-            </div>
-            <div class="portfolio-card-overlay">
-              <div class="portfolio-card-content">
-                <span class="portfolio-card-category">Analytics</span>
-                <h3>Business Analytics Dashboard</h3>
-                <div class="portfolio-card-tech">
-                  <span>Vue.js</span>
-                  <span>Python</span>
-                  <span>AWS</span>
-                </div>
-              </div>
-            </div>
+        <div class="home-portfolio-grid" id="homePortfolioList">
+          <div class="container py-20 text-center col-span-full">
+            <div class="animate-spin mb-4" style="font-size: 2rem;">⏳</div>
+            <p>Memuat proyek terbaru...</p>
           </div>
         </div>
       </div>
@@ -987,6 +885,9 @@
       });
     })();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/content-loader.js"></script>
 </body>
 
 </html>

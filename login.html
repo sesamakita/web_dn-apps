@@ -99,7 +99,7 @@
                     <div class="form-group">
                         <label for="password">
                             Password
-                            <a href="#" class="forgot-password">Lupa password?</a>
+                            <a href="forgot-password.html" class="forgot-password">Lupa password?</a>
                         </label>
                         <div class="password-input">
                             <input type="password" id="password" name="password" placeholder="Masukkan password"
@@ -184,8 +184,8 @@
             const result = await signIn(email, password);
 
             if (result.success) {
-                // Redirect to dashboard
-                window.location.href = 'dashboard.html';
+                // Redirect to dashboard based on role
+                await redirectBasedOnRole();
             } else {
                 // Show error message
                 alert('Login gagal: ' + result.error);

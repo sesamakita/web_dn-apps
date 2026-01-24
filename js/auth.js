@@ -101,15 +101,31 @@ async function requireAuth(redirectUrl = 'login.html') {
 
 /**
  * Redirect if already authenticated
- * @param {string} redirectUrl - URL to redirect to
+ * @param {string} defaultUrl - URL to redirect to if no role check is needed
  */
-async function redirectIfAuthenticated(redirectUrl = 'dashboard.html') {
+async function redirectIfAuthenticated(defaultUrl = 'dashboard.html') {
     const user = await getUser();
     if (user) {
-        window.location.href = redirectUrl;
+        await redirectBasedOnRole(defaultUrl);
         return true;
     }
     return false;
+}
+
+/**
+ * Fetch profile and redirect based on user role
+ * @param {string} fallbackUrl - URL to redirect if not an admin
+ */
+async function redirectBasedOnRole(fallbackUrl = 'dashboard.html') {
+    const profile = await getUserProfile();
+    if (profile && profile.role === 'admin') {
+        window.location.href = 'admin/dashboard.html';
+    } else if (profile && profile.role === 'user' && !window.location.pathname.includes('/admin/')) {
+        // Already on user dashboard or elsewhere
+        if (fallbackUrl) window.location.href = fallbackUrl;
+    } else {
+        window.location.href = fallbackUrl;
+    }
 }
 
 /**
@@ -189,20 +205,28 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
  * @param {object|null} user - User object or null
  */
 function updateAuthUI(user) {
-    const loginBtn = document.querySelector('.btn-login');
-    const signupBtn = document.querySelector('.btn-signup');
+    const loginBtns = document.querySelectorAll('.btn-login, .nav-login');
+    const signupBtns = document.querySelectorAll('.btn-signup, .nav-cta');
     const userMenu = document.querySelector('.user-menu');
 
     if (user) {
         // User is logged in
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (signupBtn) signupBtn.textContent = 'Dashboard';
-        if (signupBtn) signupBtn.href = 'dashboard.html';
+        loginBtns.forEach(btn => btn.style.display = 'none');
+
+        // Fetch profile to determine dashboard link
+        getUserProfile().then(profile => {
+            signupBtns.forEach(btn => {
+                btn.textContent = 'Dashboard';
+                btn.href = (profile && profile.role === 'admin') ? 'admin/dashboard.html' : 'dashboard.html';
+            });
+        });
     } else {
         // User is not logged in
-        if (loginBtn) loginBtn.style.display = '';
-        if (signupBtn) signupBtn.textContent = 'Daftar';
-        if (signupBtn) signupBtn.href = 'signup.html';
+        loginBtns.forEach(btn => btn.style.display = '');
+        signupBtns.forEach(btn => {
+            btn.textContent = 'Daftar';
+            btn.href = 'signup.html';
+        });
     }
 }
 

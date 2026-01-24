@@ -19,10 +19,11 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: var(--bg-glass);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-bottom: 1px solid var(--border-color);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur-lg);
+    -webkit-backdrop-filter: var(--glass-blur-lg);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     opacity: 0;
     transition: opacity var(--transition-base);
 }

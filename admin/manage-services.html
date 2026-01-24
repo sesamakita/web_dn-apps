@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Layanan - Admin DN Apps</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/favicon.svg">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/auth.css">
+    <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout" id="adminContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html">
+                    <img src="../assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="manage-services.html" class="nav-item active">
+                    <span>🛠️</span> Services
+                </a>
+                <a href="manage-portfolio.html" class="nav-item">
+                    <span>📁</span> Portfolio
+                </a>
+                <a href="manage-blog.html" class="nav-item">
+                    <span>📝</span> Blog
+                </a>
+                <a href="manage-contacts.html" class="nav-item">
+                    <span>📧</span> Contacts
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-ghost btn-block" id="logoutBtn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-title">
+                    <h1>Kelola Layanan</h1>
+                    <p>Daftar layanan yang muncul di website.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openModal()">+ Tambah Layanan</button>
+            </header>
+
+            <div class="content-card p-0 mt-8">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Urutan</th>
+                            <th>Judul</th>
+                            <th>Deskripsi</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="servicesList">
+                        <tr>
+                            <td colspan="4" style="text-align:center">Loading services...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form -->
+    <div class="modal-overlay" id="serviceModal">
+        <div class="modal-card modal-card-lg">
+            <h2 id="modalTitle" style="margin-bottom: var(--space-8); font-weight: 800; font-size: var(--text-2xl);">
+                Tambah Layanan</h2>
+            <form id="serviceForm" class="form-section">
+                <input type="hidden" id="serviceId">
+
+                <div class="form-row-2">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Judul Layanan</label>
+                        <input type="text" id="title" placeholder="Contoh: Web Development" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Urutan (e.g. 01, 02)</label>
+                        <input type="text" id="caption" placeholder="01" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Deskripsi Layanan</label>
+                    <textarea id="description" rows="4" placeholder="Jelaskan secara detail mengenai layanan ini..."
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Gambar Layanan</label>
+                    <div class="image-upload-zone" onclick="document.getElementById('imageFile').click()">
+                        <span style="font-size: 20px;">🖼️</span>
+                        <span>Klik untuk pilih atau ganti gambar layanan</span>
+                        <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="preview-container" id="previewContainer">
+                        <img id="imagePreview" src="">
+                        <button type="button" class="btn-remove-image" id="removeImage">×</button>
+                    </div>
+                </div>
+
+                <div
+                    style="display:flex; justify-content: flex-end; gap: var(--space-4); margin-top: var(--space-10); border-top: 1px solid var(--border-color); padding-top: 24px;">
+                    <button type="button" class="btn btn-ghost" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" style="padding: 12px 32px;">Simpan
+                        Layanan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        let services = [];
+        let currentImageFile = null;
+
+        // Use standard Auth Guard
+        (async () => {
+            const user = await getUser();
+            if (!user) { window.location.href = '../login.html'; return; }
+            const { data: profile } = await supabaseClient.from('profiles').select('role').eq('id', user.id).single();
+            if (profile?.role !== 'admin') {
+                alert('Akses Ditolak.');
+                window.location.href = '../dashboard.html';
+                return;
+            }
+            document.getElementById('adminContainer').style.display = 'flex';
+            loadServices();
+        })();
+
+        // Logout listener
+        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+            await signOut();
+            window.location.href = '../login.html';
+        });
+
+        async function loadServices() {
+            const { data, error } = await supabaseClient.from('services').select('*').order('caption', { ascending: true });
+            if (error) return console.error(error);
+            services = data;
+            renderServices();
+        }
+
+        function renderServices() {
+            const html = services.map(s => `
+                <tr>
+                    <td><span class="badge badge-info">${s.caption}</span></td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:16px">
+                            <img src="${s.image_url || 'https://via.placeholder.com/48'}" class="item-thumb">
+                            <strong style="font-size: var(--text-base)">${s.title}</strong>
+                        </div>
+                    </td>
+                    <td style="font-size: 14px; color: var(--text-secondary); max-width: 400px;">${s.description}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-outline" onclick="openModal('${s.id}')">Edit</button>
+                            <button class="btn btn-sm btn-ghost" style="color:red" onclick="deleteService('${s.id}')">Hapus</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('servicesList').innerHTML = html || '<tr><td colspan="4" style="text-align:center">Belum ada data.</td></tr>';
+        }
+
+        const imageInput = document.getElementById('imageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewContainer = document.getElementById('previewContainer');
+        const removeImageBtn = document.getElementById('removeImage');
+
+        imageInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                currentImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (re) => {
+                    imagePreview.src = re.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        removeImageBtn.onclick = () => {
+            currentImageFile = null;
+            imageInput.value = '';
+            imagePreview.src = '';
+            previewContainer.style.display = 'none';
+        };
+
+        function openModal(id = null) {
+            const modal = document.getElementById('serviceModal');
+            const form = document.getElementById('serviceForm');
+            const title = document.getElementById('modalTitle');
+
+            form.reset();
+            document.getElementById('serviceId').value = '';
+            previewContainer.style.display = 'none';
+            currentImageFile = null;
+
+            if (id) {
+                const s = services.find(x => x.id === id);
+                document.getElementById('serviceId').value = s.id;
+                document.getElementById('title').value = s.title;
+                document.getElementById('caption').value = s.caption;
+                document.getElementById('description').value = s.description;
+                if (s.image_url) {
+                    imagePreview.src = s.image_url;
+                    previewContainer.style.display = 'block';
+                }
+                title.innerText = 'Edit Layanan';
+            } else {
+                title.innerText = 'Tambah Layanan';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('serviceModal').style.display = 'none';
+        }
+
+        document.getElementById('serviceForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('saveBtn');
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Menyimpan...';
+
+            try {
+                const id = document.getElementById('serviceId').value;
+                let imageUrl = id ? (services.find(x => x.id === id)?.image_url || null) : null;
+
+                if (currentImageFile) {
+                    const uploadedUrl = await uploadImage(currentImageFile, 'content', 'services');
+                    if (uploadedUrl) imageUrl = uploadedUrl;
+                }
+
+                const payload = {
+                    title: document.getElementById('title').value,
+                    caption: document.getElementById('caption').value,
+                    description: document.getElementById('description').value,
+                    image_url: imageUrl
+                };
+
+                const { error } = id
+                    ? await supabaseClient.from('services').update(payload).eq('id', id)
+                    : await supabaseClient.from('services').insert([payload]);
+
+                if (error) throw error;
+
+                closeModal();
+                loadServices();
+            } catch (err) {
+                alert('Gagal menyimpan: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        }
+
+        async function deleteService(id) {
+            if (!confirm('Yakin ingin menghapus layanan ini?')) return;
+            const { error } = await supabaseClient.from('services').delete().eq('id', id);
+            if (error) alert(error.message);
+            else loadServices();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Blog - Admin DN Apps</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/favicon.svg">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/auth.css">
+    <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout" id="adminContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html">
+                    <img src="../assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="manage-services.html" class="nav-item">
+                    <span>🛠️</span> Services
+                </a>
+                <a href="manage-portfolio.html" class="nav-item">
+                    <span>📁</span> Portfolio
+                </a>
+                <a href="manage-blog.html" class="nav-item active">
+                    <span>📝</span> Blog
+                </a>
+                <a href="manage-contacts.html" class="nav-item">
+                    <span>📧</span> Contacts
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-ghost btn-block" id="logoutBtn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-title">
+                    <h1>Kelola Blog</h1>
+                    <p>Tulis dan publikasikan artikel.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openModal()">+ Tulis Artikel</button>
+            </header>
+
+            <div class="content-card p-0 mt-8">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="blogList">
+                        <tr>
+                            <td colspan="4" style="text-align:center">Loading blogs...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form -->
+    <div class="modal-overlay" id="blogModal">
+        <div class="modal-card modal-card-lg">
+            <h2 id="modalTitle" style="margin-bottom: var(--space-8); font-weight: 800; font-size: var(--text-2xl);">
+                Tambah Artikel Baru</h2>
+            <form id="blogForm" class="form-section">
+                <input type="hidden" id="blogId">
+
+                <!-- Row 1: Title & Category -->
+                <div class="form-row-2">
+                    <div class="form-group" style="flex: 2;">
+                        <label>Judul Artikel</label>
+                        <input type="text" id="title" placeholder="Masukkan judul artikel yang menarik..." required
+                            oninput="generateSlug()">
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select id="category" required>
+                            <option value="">Pilih Kategori</option>
+                            <option value="AI & Technology">AI & Technology</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Mobile App">Mobile App</option>
+                            <option value="UI/UX">UI/UX</option>
+                            <option value="Cloud">Cloud</option>
+                            <option value="Tutorial">Tutorial</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row 2: Slug & Status -->
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Slug (URL Link)</label>
+                        <input type="text" id="slug" placeholder="tips-membangun-website" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status Publikasi</label>
+                        <select id="status">
+                            <option value="draft">📁 Draft (Internal Only)</option>
+                            <option value="published">🚀 Published (Live on Site)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Row 3: Ringkasan -->
+                <div class="form-group">
+                    <label>Ringkasan Singkat (Excerpt)</label>
+                    <textarea id="excerpt" rows="2" placeholder="Gambarkan isi artikel dalam 1-2 kalimat..."
+                        required></textarea>
+                </div>
+
+                <!-- Row 4: Konten Utama -->
+                <div class="form-group">
+                    <label>Konten Artikel (HTML Support)</label>
+                    <textarea id="content" rows="12"
+                        placeholder="Tulis isi berita atau artikel secara detail di sini..." required
+                        style="font-family: 'Inter', sans-serif; line-height: 1.6;"></textarea>
+                </div>
+
+                <!-- Row 5: Media Upload -->
+                <div class="form-group">
+                    <label>Gambar Unggulan (Featured Image)</label>
+                    <div class="image-upload-zone" onclick="document.getElementById('imageFile').click()">
+                        <span style="font-size: 20px;">🖼️</span>
+                        <span>Klik untuk memilih atau ganti gambar utama</span>
+                        <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="preview-container" id="previewContainer">
+                        <img id="imagePreview" src="">
+                        <button type="button" class="btn-remove-image" id="removeImage">×</button>
+                    </div>
+                </div>
+
+                <div
+                    style="display:flex; justify-content: flex-end; gap: var(--space-4); margin-top: var(--space-10); border-top: 1px solid var(--border-color); padding-top: 24px;">
+                    <button type="button" class="btn btn-ghost" onclick="closeModal()">Batalkan</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" style="padding: 12px 32px;">Simpan
+                        Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        let blogs = [];
+        let currentImageFile = null;
+
+        // Auth Guard
+        (async () => {
+            const user = await getUser();
+            if (!user) { window.location.href = '../login.html'; return; }
+            const { data: profile } = await supabaseClient.from('profiles').select('role').eq('id', user.id).single();
+            if (profile?.role !== 'admin') {
+                alert('Akses Ditolak.');
+                window.location.href = '../dashboard.html';
+                return;
+            }
+            document.getElementById('adminContainer').style.display = 'flex';
+            loadBlogs();
+        })();
+
+        // Logout
+        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+            await signOut();
+            window.location.href = '../login.html';
+        });
+
+        async function loadBlogs() {
+            const { data, error } = await supabaseClient.from('blogs').select('*').order('created_at', { ascending: false });
+            if (error) return console.error(error);
+            blogs = data;
+            renderBlogs();
+        }
+
+        function renderBlogs() {
+            const html = blogs.map(b => `
+                <tr>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:16px">
+                            <img src="${b.image_url || 'https://via.placeholder.com/48'}" class="item-thumb">
+                            <strong style="font-size: var(--text-base)">${b.title}</strong>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-info">${b.category}</span></td>
+                    <td><span class="badge ${b.status === 'published' ? 'badge-success' : 'badge-warning'}">${b.status}</span></td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-outline" onclick="openModal('${b.id}')">Edit</button>
+                            <button class="btn btn-sm btn-ghost" style="color:red" onclick="deleteBlog('${b.id}')">Hapus</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('blogList').innerHTML = html || '<tr><td colspan="4" style="text-align:center">Belum ada artikel.</td></tr>';
+        }
+
+        const imageInput = document.getElementById('imageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewContainer = document.getElementById('previewContainer');
+        const removeImageBtn = document.getElementById('removeImage');
+
+        imageInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                currentImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (re) => {
+                    imagePreview.src = re.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        removeImageBtn.onclick = () => {
+            currentImageFile = null;
+            imageInput.value = '';
+            imagePreview.src = '';
+            previewContainer.style.display = 'none';
+        };
+
+        function generateSlug() {
+            const title = document.getElementById('title').value;
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            document.getElementById('slug').value = slug;
+        }
+
+        function openModal(id = null) {
+            const modal = document.getElementById('blogModal');
+            const form = document.getElementById('blogForm');
+            const title = document.getElementById('modalTitle');
+
+            form.reset();
+            document.getElementById('blogId').value = '';
+            previewContainer.style.display = 'none';
+            currentImageFile = null;
+
+            if (id) {
+                const b = blogs.find(x => x.id === id);
+                document.getElementById('blogId').value = b.id;
+                document.getElementById('title').value = b.title;
+                document.getElementById('slug').value = b.slug;
+                document.getElementById('category').value = b.category;
+                document.getElementById('excerpt').value = b.excerpt;
+                document.getElementById('content').value = b.content;
+                document.getElementById('status').value = b.status;
+                if (b.image_url) {
+                    imagePreview.src = b.image_url;
+                    previewContainer.style.display = 'block';
+                }
+                title.innerText = 'Edit Artikel';
+            } else {
+                title.innerText = 'Tulis Artikel Baru';
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        window.editBlog = openModal;
+
+        function closeModal() {
+            document.getElementById('blogModal').style.display = 'none';
+        }
+
+        document.getElementById('blogForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('saveBtn');
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Menyimpan...';
+
+            try {
+                const id = document.getElementById('blogId').value;
+                let imageUrl = id ? (blogs.find(x => x.id === id)?.image_url || null) : null;
+
+                if (currentImageFile) {
+                    const uploadedUrl = await uploadImage(currentImageFile, 'content', 'blog');
+                    if (uploadedUrl) imageUrl = uploadedUrl;
+                }
+
+                const payload = {
+                    title: document.getElementById('title').value,
+                    slug: document.getElementById('slug').value,
+                    category: document.getElementById('category').value,
+                    excerpt: document.getElementById('excerpt').value,
+                    content: document.getElementById('content').value,
+                    status: document.getElementById('status').value,
+                    image_url: imageUrl,
+                    published_at: document.getElementById('status').value === 'published' ? new Date() : (id ? blogs.find(x => x.id === id).published_at : null)
+                };
+
+                const { error } = id
+                    ? await supabaseClient.from('blogs').update(payload).eq('id', id)
+                    : await supabaseClient.from('blogs').insert([payload]);
+
+                if (error) throw error;
+                closeModal();
+                loadBlogs();
+            } catch (err) {
+                alert('Gagal menyimpan: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        }
+
+        async function deleteBlog(id) {
+            if (!confirm('Hapus artikel ini?')) return;
+            const { error } = await supabaseClient.from('blogs').delete().eq('id', id);
+            if (error) alert(error.message);
+            else loadBlogs();
+        }
+    </script>
+</body>
+
+</html>

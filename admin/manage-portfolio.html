@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Portfolio - Admin DN Apps</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/favicon.svg">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/auth.css">
+    <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout" id="adminContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html">
+                    <img src="../assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="manage-services.html" class="nav-item">
+                    <span>🛠️</span> Services
+                </a>
+                <a href="manage-portfolio.html" class="nav-item active">
+                    <span>📁</span> Portfolio
+                </a>
+                <a href="manage-blog.html" class="nav-item">
+                    <span>📝</span> Blog
+                </a>
+                <a href="manage-contacts.html" class="nav-item">
+                    <span>📧</span> Contacts
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-ghost btn-block" id="logoutBtn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-title">
+                    <h1>Kelola Portfolio</h1>
+                    <p>Daftar proyek dan karya yang ditampilkan.</p>
+                </div>
+                <button class="btn btn-primary" onclick="openModal()">+ Tambah Proyek</button>
+            </header>
+
+            <div class="content-card p-0 mt-8">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Judul</th>
+                            <th>Kategori</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="portfolioList">
+                        <tr>
+                            <td colspan="3" style="text-align:center">Loading projects...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Form -->
+    <div class="modal-overlay" id="portfolioModal">
+        <div class="modal-card modal-card-lg">
+            <h2 id="modalTitle" style="margin-bottom: var(--space-8); font-weight: 800; font-size: var(--text-2xl);">
+                Tambah Proyek</h2>
+            <form id="portfolioForm" class="form-section">
+                <input type="hidden" id="projectId">
+
+                <div class="form-group">
+                    <label>Judul Proyek</label>
+                    <input type="text" id="title" placeholder="Contoh: Website E-Commerce" required>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label>Kategori (Slug: web, mobile, uiux)</label>
+                        <input type="text" id="category" placeholder="web" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Display Kategori</label>
+                        <input type="text" id="category_display" placeholder="Web Development" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Gambar Proyek</label>
+                    <div class="image-upload-zone" onclick="document.getElementById('imageFile').click()">
+                        <span style="font-size: 20px;">🖼️</span>
+                        <span>Klik untuk pilih atau ganti gambar proyek</span>
+                        <input type="file" id="imageFile" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="preview-container" id="previewContainer">
+                        <img id="imagePreview" src="">
+                        <button type="button" class="btn-remove-image" id="removeImage">×</button>
+                    </div>
+                </div>
+
+                <div
+                    style="display:flex; justify-content: flex-end; gap: var(--space-4); margin-top: var(--space-10); border-top: 1px solid var(--border-color); padding-top: 24px;">
+                    <button type="button" class="btn btn-ghost" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="saveBtn" style="padding: 12px 32px;">Simpan
+                        Proyek</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        let projects = [];
+        let currentImageFile = null;
+
+        // Auth Guard
+        (async () => {
+            const user = await getUser();
+            if (!user) { window.location.href = '../login.html'; return; }
+            const { data: profile } = await supabaseClient.from('profiles').select('role').eq('id', user.id).single();
+            if (profile?.role !== 'admin') {
+                alert('Akses Ditolak.');
+                window.location.href = '../dashboard.html';
+                return;
+            }
+            document.getElementById('adminContainer').style.display = 'flex';
+            loadProjects();
+        })();
+
+        // Logout
+        document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+            await signOut();
+            window.location.href = '../login.html';
+        });
+
+        async function loadProjects() {
+            const { data, error } = await supabaseClient.from('portfolio').select('*').order('created_at', { ascending: false });
+            if (error) return console.error(error);
+            projects = data;
+            renderProjects();
+        }
+
+        function renderProjects() {
+            const html = projects.map(p => `
+                <tr>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:16px">
+                            <img src="${p.image_url || 'https://via.placeholder.com/48'}" class="item-thumb">
+                            <strong style="font-size: var(--text-base)">${p.title}</strong>
+                        </div>
+                    </td>
+                    <td><span class="badge badge-info">${p.category_display}</span></td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn btn-sm btn-outline" onclick="openModal('${p.id}')">Edit</button>
+                            <button class="btn btn-sm btn-ghost" style="color:red" onclick="deleteProject('${p.id}')">Hapus</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+            document.getElementById('portfolioList').innerHTML = html || '<tr><td colspan="3" style="text-align:center">Belum ada data.</td></tr>';
+        }
+
+        const imageInput = document.getElementById('imageFile');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewContainer = document.getElementById('previewContainer');
+        const removeImageBtn = document.getElementById('removeImage');
+
+        imageInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                currentImageFile = file;
+                const reader = new FileReader();
+                reader.onload = (re) => {
+                    imagePreview.src = re.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        removeImageBtn.onclick = () => {
+            currentImageFile = null;
+            imageInput.value = '';
+            imagePreview.src = '';
+            previewContainer.style.display = 'none';
+        };
+
+        function openModal(id = null) {
+            const modal = document.getElementById('portfolioModal');
+            const form = document.getElementById('portfolioForm');
+            const title = document.getElementById('modalTitle');
+            form.reset();
+            document.getElementById('projectId').value = '';
+            previewContainer.style.display = 'none';
+            currentImageFile = null;
+
+            if (id) {
+                const p = projects.find(x => x.id === id);
+                document.getElementById('projectId').value = p.id;
+                document.getElementById('title').value = p.title;
+                document.getElementById('category').value = p.category;
+                document.getElementById('category_display').value = p.category_display;
+                if (p.image_url) {
+                    imagePreview.src = p.image_url;
+                    previewContainer.style.display = 'block';
+                }
+                title.innerText = 'Edit Proyek';
+            } else {
+                title.innerText = 'Tambah Proyek';
+            }
+            modal.style.display = 'flex';
+        }
+
+        window.editProject = openModal;
+
+        function closeModal() {
+            document.getElementById('portfolioModal').style.display = 'none';
+        }
+
+        document.getElementById('portfolioForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById('saveBtn');
+            const originalText = submitBtn.innerText;
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Menyimpan...';
+
+            try {
+                const id = document.getElementById('projectId').value;
+                let imageUrl = id ? (projects.find(x => x.id === id)?.image_url || null) : null;
+
+                if (currentImageFile) {
+                    const uploadedUrl = await uploadImage(currentImageFile, 'content', 'portfolio');
+                    if (uploadedUrl) imageUrl = uploadedUrl;
+                }
+
+                const payload = {
+                    title: document.getElementById('title').value,
+                    category: document.getElementById('category').value,
+                    category_display: document.getElementById('category_display').value,
+                    image_url: imageUrl
+                };
+
+                const { error } = id
+                    ? await supabaseClient.from('portfolio').update(payload).eq('id', id)
+                    : await supabaseClient.from('portfolio').insert([payload]);
+
+                if (error) throw error;
+                closeModal();
+                loadProjects();
+            } catch (err) {
+                alert('Gagal menyimpan: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalText;
+            }
+        }
+
+        async function deleteProject(id) {
+            if (!confirm('Hapus proyek ini?')) return;
+            const { error } = await supabaseClient.from('portfolio').delete().eq('id', id);
+            if (error) alert(error.message);
+            else loadProjects();
+        }
+    </script>
+</body>
+
+</html>

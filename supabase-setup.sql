@@ -18,16 +18,19 @@ CREATE TABLE IF NOT EXISTS profiles (
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Users can view their own profile
+DROP POLICY IF EXISTS "Users can view own profile" ON profiles;
 CREATE POLICY "Users can view own profile" 
 ON profiles FOR SELECT 
 USING (auth.uid() = id);
 
 -- Policy: Users can insert their own profile
+DROP POLICY IF EXISTS "Users can insert own profile" ON profiles;
 CREATE POLICY "Users can insert own profile" 
 ON profiles FOR INSERT 
 WITH CHECK (auth.uid() = id);
 
 -- Policy: Users can update their own profile
+DROP POLICY IF EXISTS "Users can update own profile" ON profiles;
 CREATE POLICY "Users can update own profile" 
 ON profiles FOR UPDATE 
 USING (auth.uid() = id);
@@ -51,12 +54,14 @@ CREATE TABLE IF NOT EXISTS contacts (
 ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Anyone can insert (public contact form)
+DROP POLICY IF EXISTS "Anyone can submit contact form" ON contacts;
 CREATE POLICY "Anyone can submit contact form" 
 ON contacts FOR INSERT 
 WITH CHECK (true);
 
 -- Policy: Only authenticated users can read (admin)
 -- Note: You may want to restrict this further with a custom role
+DROP POLICY IF EXISTS "Authenticated users can read contacts" ON contacts;
 CREATE POLICY "Authenticated users can read contacts" 
 ON contacts FOR SELECT 
 USING (auth.role() = 'authenticated');
