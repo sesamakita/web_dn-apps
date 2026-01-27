@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - DN Apps</title>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/logo/favicon.svg">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/pages/auth.css">
+    <link rel="stylesheet" href="../css/pages/admin.css">
+    <link rel="stylesheet" href="../css/pages/analytics.css">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="admin-layout" id="adminContainer" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html">
+                    <img src="../assets/images/logo_dnapps.png" alt="DN Apps" class="logo-image">
+                </a>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span>🏠</span> Dashboard
+                </a>
+                <a href="analytics-dashboard.html" class="nav-item active">
+                    <span>📊</span> Analytics
+                </a>
+                <a href="manage-services.html" class="nav-item">
+                    <span>🛠️</span> Services
+                </a>
+                <a href="manage-portfolio.html" class="nav-item">
+                    <span>📁</span> Portfolio
+                </a>
+                <a href="manage-blog.html" class="nav-item">
+                    <span>📝</span> Blog
+                </a>
+                <a href="manage-contacts.html" class="nav-item">
+                    <span>📧</span> Contacts
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-ghost btn-block" id="logoutBtn">Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <div class="admin-title">
+                    <h1>📊 Web Analytics</h1>
+                    <p>Monitor website traffic dan visitor behavior</p>
+                </div>
+                <div class="date-filter">
+                    <select id="dateRange" class="filter-select">
+                        <option value="7">Last 7 Days</option>
+                        <option value="30" selected>Last 30 Days</option>
+                        <option value="90">Last 90 Days</option>
+                    </select>
+                </div>
+            </header>
+
+            <!-- Overview Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">👁️</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Page Views</div>
+                        <div class="stat-value" id="totalPageViews">...</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Unique Visitors</div>
+                        <div class="stat-value" id="uniqueVisitors">...</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔄</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Avg. Pages/Visit</div>
+                        <div class="stat-value" id="avgPages">...</div>
+                    </div>
+                </div>
+                <div class="stat-card realtime-card">
+                    <div class="stat-icon pulse">🟢</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Active Users Now</div>
+                        <div class="stat-value" id="activeUsers">...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <!-- Visitor Trend Chart -->
+                <div class="chart-card chart-card-wide">
+                    <h3>📈 Visitor Trend</h3>
+                    <canvas id="visitorTrendChart"></canvas>
+                </div>
+
+                <!-- Device Distribution -->
+                <div class="chart-card">
+                    <h3>📱 Device Distribution</h3>
+                    <canvas id="deviceChart"></canvas>
+                </div>
+
+                <!-- Top Pages -->
+                <div class="chart-card">
+                    <h3>🔝 Top Pages</h3>
+                    <canvas id="topPagesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Top Pages Table -->
+            <div class="content-card mt-8">
+                <h3 style="margin-bottom: var(--space-4); font-size: var(--text-lg); font-weight: 700;">
+                    📄 Page Statistics
+                </h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Page</th>
+                            <th>Views</th>
+                            <th>Unique Visitors</th>
+                            <th>Avg. Views/Visitor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="topPagesTable">
+                        <tr>
+                            <td colspan="4" style="text-align:center">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Traffic Sources -->
+            <div class="content-card mt-8">
+                <h3 style="margin-bottom: var(--space-4); font-size: var(--text-lg); font-weight: 700;">
+                    🔗 Top Referrers
+                </h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Referrer</th>
+                            <th>Visits</th>
+                            <th>Percentage</th>
+                        </tr>
+                    </thead>
+                    <tbody id="referrersTable">
+                        <tr>
+                            <td colspan="3" style="text-align:center">Loading data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/admin.js"></script>
+    <script src="../js/analytics-dashboard.js"></script>
+</body>
+
+</html>
